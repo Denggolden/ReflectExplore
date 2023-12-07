@@ -1,0 +1,25 @@
+cmake_minimum_required(VERSION 3.10.0)
+project(ExploreFeatures)
+
+#set(CMAKE_CXX_STANDARD 11)
+
+# 添加第一个可执行文件
+add_executable(ReflectExplore 
+${CMAKE_SOURCE_DIR}/ReflectExplore/main.cpp
+)
+
+# 添加第二个可执行文件
+add_executable(ReflexAny
+${CMAKE_SOURCE_DIR}/ReflexAny/main.cpp
+${CMAKE_SOURCE_DIR}/ReflexAny/ReflexBase.cpp
+${CMAKE_SOURCE_DIR}/ReflexAny/ReflexBase.h
+${CMAKE_SOURCE_DIR}/ReflexAny/WorkClass.cpp
+${CMAKE_SOURCE_DIR}/ReflexAny/WorkClass.h)
+
+# 添加第三个可执行文件
+add_executable(ReflexInherit
+${CMAKE_SOURCE_DIR}/ReflexInherit/main.cpp
+${CMAKE_SOURCE_DIR}/ReflexInherit/ReflexBase.cpp
+${CMAKE_SOURCE_DIR}/ReflexInherit/ReflexBase.h
+${CMAKE_SOURCE_DIR}/ReflexInherit/WorkClass.cpp
+${CMAKE_SOURCE_DIR}/ReflexInherit/WorkClass.h)
