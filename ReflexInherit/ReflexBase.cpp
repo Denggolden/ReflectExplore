@@ -4,6 +4,19 @@
 
 void ReflexObjInit::InitObjFactory()
 {
+	WorkClass1* ppppWorkClass1 = new WorkClass1();
+
+	//if (has_member_f1<WorkClass1>::value) {
+	//	std::cout << "has_member_f1<WorkClass1>::value" << std::endl;
+	//}
+	//else
+	//{
+	//	std::cout << "！ has_member_f1<WorkClass1>::value" << std::endl;
+	//}
+
+	registClass111<WorkClass1>("WorkClass1_1", ppppWorkClass1);
+	registClass1<WorkClass1,const MsgInfo&>("WorkClass1_1", ppppWorkClass1);
+	registClass11<WorkClass1, const MsgInfo&>("WorkClass1_1", ppppWorkClass1);
 	//CreateObj<WorkClass1>("WorkClass1_1");//默认构造   类名为：WorkClass1-1(下面依次类推)
 	//CreateObj<WorkClass1>("WorkClass1_2");//默认构造   类名为：WorkClass1-2(下面依次类推)
 	//CreateObj<WorkClass1,int>("WorkClass1_3",123);//有参构造   类名为：WorkClass1-3(下面依次类推)

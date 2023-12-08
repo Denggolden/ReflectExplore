@@ -9,8 +9,8 @@ public:
 	WorkClass1(int para);
 	~WorkClass1();
 
-protected:
-   void InitClass() override;
+public:
+	void InitClass() override;
 	void UpDateClass(const MsgInfo& msgInfo) override;
 };
 
@@ -21,7 +21,7 @@ public:
 	WorkClass2(std::string para);
 	~WorkClass2();
 
-protected:
+public:
 	void InitClass() override;
 	void UpDateClass(const MsgInfo& msgInfo) override;
 };

@@ -3,6 +3,7 @@
 #include <string>
 #include <map>
 #include <list>
+#include <type_traits>
 
 typedef enum class MsgType
 {
@@ -40,6 +41,50 @@ public:
 private:
     std::string ObjName;
 };
+
+#define HAS_MEMBER(member)\
+template<typename T, typename... Args> struct has_member_##member{\
+private:\
+    template<typename U> static auto Check(int) -> decltype(std::declval<U>().member(std::declval<Args>()...), std::true_type());\
+    template<typename U> static std::false_type Check(...);\
+public:\
+    enum{value = std::is_same<decltype(Check<T>(0)), std::true_type>::value};\
+};\
+
+HAS_MEMBER(InitClass);
+HAS_MEMBER(UpDateClass);
+
+//原型
+//void registClass(std::string objName, CBase* pT) {
+//    //ObjMap[objName] = pT;
+//    std::cout << "regist: " << objName << "   adress: " << (void*)pT << std::endl;
+//}
+
+//记住【模板可变参数】---可有可无
+//检查类中是否含有 InitClass() 成员函数  如果类里面存在 但判断失败请检查是否成员函数的权限是公有（public）的 
+template <typename T>
+typename std::enable_if<has_member_InitClass<T>::value>::type registClass111(std::string objName, CBase* pT) {
+    std::cout << "regist: " << objName << "   adress: " << (void*)pT << std::endl;
+    std::cout << "--------------------------------regist:-----------------------------------------"<< std::endl;
+}
+
+//记住【模板可变参数】---可有可无
+//检查类中是否含有 UpDateClass(const MsgInfo& msgInfo) 成员函数  如果类里面存在 但判断失败请检查是否成员函数的权限是公有（public）的 
+template <typename T, typename... Args>
+typename std::enable_if<has_member_UpDateClass<T, Args...>::value>::type registClass1(std::string objName, CBase* pT) {
+    std::cout << "regist: " << objName << "   adress: " << (void*)pT << std::endl;
+    std::cout << "--------------------------------regist:-----------------------------------------" << std::endl;
+}
+
+//记住【模板可变参数】---可有可无
+//两者组合就完整了  如果类里面存在 但判断失败请检查是否成员函数的权限是公有（public）的 
+template <typename T, typename... Args>
+typename std::enable_if<has_member_InitClass<T>::value&& has_member_UpDateClass<T, Args...>::value>::type
+registClass11(std::string objName, CBase* pT) {
+    std::cout << "regist: " << objName << "   adress: " << (void*)pT << std::endl;
+    std::cout << "--------------------------------regist:-----------------------------------------" << std::endl;
+}
+
 
 //也就是说目前类之间通信的方式有两种
 //1.使用对象管理工厂 需要通信类之间提供公有的接口进行
