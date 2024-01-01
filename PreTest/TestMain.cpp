@@ -265,89 +265,128 @@
 
 //-----------------------分割线------------------------------------------------
 
-#include <string>
-#include <iostream>
+//#include <string>
+//#include <iostream>
+//
+//using namespace std;
+//
+//
+//class Box {
+//public:
+//	string str() {
+//		return "yes";
+//	}
+//};
+//
+//class Bin {
+//public:
+//	string str1() {
+//		return "no";
+//	}
+//};
+//
+//template <typename U>
+//struct class_str {
+//
+//	template <typename T, string(T::*)() = &T::str>
+//	static constexpr bool check(T*) { return true; };
+//
+//	static constexpr bool check(...) { return false; };
+//
+//	static constexpr bool ret = check(static_cast<U*>(0));
+//};
+//
+//// 不含有string str()方法的非std::string类
+//template<typename T,
+//	typename std::enable_if<std::is_class<T>::value && !std::is_same<T, string>::value, T>::type* = nullptr,
+//	typename std::enable_if<!class_str<T>::ret, T>::type* = nullptr>
+//	std::string str(T& t) {
+//	cout << "1.---------------------" << endl;
+//	return "null";
+//};
+//
+//// std::string类
+//template<typename T,
+//	typename std::enable_if<std::is_class<T>::value&& std::is_same<T, string>::value, T>::type* = nullptr>
+//	std::string str(T& t) {
+//	cout << "2.---------------------" << endl;
+//	return t;
+//};
+//
+//// 含有string str()方法的非std::string类
+//template<typename T,
+//	typename std::enable_if<std::is_class<T>::value && !std::is_same<T, string>::value, T>::type* = nullptr,
+//	typename std::enable_if<class_str<T>::ret, T>::type* = nullptr>
+//	std::string str(T& t) {
+//	cout << "3.---------------------" << endl;
+//	return t.str();
+//};
+//
+//// 数值型
+//template<typename T,
+//	typename std::enable_if<!std::is_class<T>::value&& std::is_arithmetic<T>::value, T>::type* = nullptr>
+//	std::string str(T& t) {
+//	cout << "4.---------------------" << endl;
+//	return std::to_string(t);
+//};
+//
+//int main() {
+//	string s = "sddds";
+//	cout << str<string>(s) << endl;
+//
+//	bool j = true;
+//	cout << str<bool>(j) << endl;
+//
+//	int i = 1000;
+//	cout << str<int>(i) << endl;
+//
+//	float f = 10.6f;
+//	cout << str<float>(f) << endl;
+//
+//	Box b1;
+//	cout << str<Box>(b1) << endl;
+//
+//	Bin b2;
+//	cout << str<Bin>(b2) << endl;
+//
+//	return 1;
+//}
 
-using namespace std;
 
+//-----------------------分割线------------------------------------------------
 
-class Box {
+#include <stdio.h>
+#include <stdlib.h>
+#include <typeinfo>
+
+class Parent
+{
 public:
-	string str() {
-		return "yes";
-	}
+    virtual void tt() {};
 };
 
-class Bin {
-public:
-	string str1() {
-		return "no";
-	}
+class Son : public Parent
+{
 };
 
-template <typename U>
-struct class_str {
-
-	template <typename T, string(T::*)() = &T::str>
-	static constexpr bool check(T*) { return true; };
-
-	static constexpr bool check(...) { return false; };
-
-	static constexpr bool ret = check(static_cast<U*>(0));
+class Test_A {
 };
 
-// 不含有string str()方法的非std::string类
-template<typename T,
-	typename std::enable_if<std::is_class<T>::value && !std::is_same<T, string>::value, T>::type* = nullptr,
-	typename std::enable_if<!class_str<T>::ret, T>::type* = nullptr>
-	std::string str(T& t) {
-	cout << "1.---------------------" << endl;
-	return "null";
+class Test_B : public Test_A {
 };
 
-// std::string类
-template<typename T,
-	typename std::enable_if<std::is_class<T>::value&& std::is_same<T, string>::value, T>::type* = nullptr>
-	std::string str(T& t) {
-	cout << "2.---------------------" << endl;
-	return t;
-};
+int main()
+{
+    Parent* p1 = new Son();
+    Son* s1 = new Son();
+    Test_A* ta = new Test_A();
+    printf("ptr type Son: %s, Parent: %s, Test_A: %s\n", typeid(s1).name(), typeid(p1).name(), typeid(ta).name());
+    printf("obj Son: %s, Parent: %s, Test_A: %s\n", typeid(*s1).name(), typeid(*p1).name(), typeid(*ta).name());
+    printf("type Son: %s, Parent: %s, Test_A: %s\n", typeid(Son).name(), typeid(Parent).name(), typeid(Test_A).name());
+    printf("successtion: %d, %d\n", typeid(Son).before(typeid(Parent)), typeid(Parent).before(typeid(Son)));
 
-// 含有string str()方法的非std::string类
-template<typename T,
-	typename std::enable_if<std::is_class<T>::value && !std::is_same<T, string>::value, T>::type* = nullptr,
-	typename std::enable_if<class_str<T>::ret, T>::type* = nullptr>
-	std::string str(T& t) {
-	cout << "3.---------------------" << endl;
-	return t.str();
-};
+    Test_A* tb = new Test_B();
+    printf("type tb: %s，\n", typeid(tb).name());
 
-// 数值型
-template<typename T,
-	typename std::enable_if<!std::is_class<T>::value&& std::is_arithmetic<T>::value, T>::type* = nullptr>
-	std::string str(T& t) {
-	cout << "4.---------------------" << endl;
-	return std::to_string(t);
-};
 
-int main() {
-	string s = "sddds";
-	cout << str<string>(s) << endl;
-
-	bool j = true;
-	cout << str<bool>(j) << endl;
-
-	int i = 1000;
-	cout << str<int>(i) << endl;
-
-	float f = 10.6f;
-	cout << str<float>(f) << endl;
-
-	Box b1;
-	cout << str<Box>(b1) << endl;
-
-	Bin b2;
-	cout << str<Bin>(b2) << endl;
-
-	return 1;
 }

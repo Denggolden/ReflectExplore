@@ -21,7 +21,7 @@ void ReflexObjInit::InitObjFactory()
 	//CreateObj<WorkClass1>("WorkClass1_2");//默认构造   类名为：WorkClass1-2(下面依次类推)
 	//CreateObj<WorkClass1,int>("WorkClass1_3",123);//有参构造   类名为：WorkClass1-3(下面依次类推)
 
-	CREATETYPE(WorkClass1) CREATEPARA(WorkClass1_1);
+	CREATETYPE(WorkClass1)CREATEPARA(WorkClass1_1);
 	//CREATETYPE(WorkClass1) CREATEPARA(WorkClass1_2);
 	//CREATETYPE(WorkClass1, int) CREATEPARA(WorkClass1_3, 123);
 
@@ -43,4 +43,19 @@ void ReflexObjInit::InitObjNotify()
 	WorkClass2* pWorkClass2_1 = ObjFactory::getIns()->getClass<WorkClass2>("WorkClass2_1");
 	ObjNotify::getIns()->subscribeInfo(pWorkClass2_1, MsgType::Type0);
 	//ObjNotify::getIns()->subscribeInfo(pWorkClass2_1, MsgType::Type1);
+}
+
+void fgg(std::string str) {
+
+};
+
+void ReflexObjInit::Test()
+{
+	//Invok<WorkClass1, void>("WorkClass1_1","InitClass");
+
+	fgg(signal(WorkClass1::CBase));
+
+	CallFunEn(WorkClass1,WorkClass1_1,void, InitClass);
+
+	InvokInitClass<WorkClass1, void>("WorkClass1_1");
 }

@@ -19,6 +19,8 @@ ${CMAKE_SOURCE_DIR}/ReflexInherit/WorkClass.cpp
 ${CMAKE_SOURCE_DIR}/ReflexInherit/WorkClass.h)
 set(SRC_LISTS4 
 ${CMAKE_SOURCE_DIR}/PreTest/TestMain.cpp)
+set(SRC_LISTS5 
+${CMAKE_SOURCE_DIR}/UnitCombine/main.cpp)
 
 # 添加第一个可执行文件
 add_executable(ReflectExplore ${SRC_LISTS1})
@@ -31,3 +33,6 @@ add_executable(ReflexInherit ${SRC_LISTS3})
 
 # 添加第四个可执行文件
 add_executable(PreTest ${SRC_LISTS4})
+
+# 添加第五个可执行文件
+add_executable(UnitCombine ${SRC_LISTS5})

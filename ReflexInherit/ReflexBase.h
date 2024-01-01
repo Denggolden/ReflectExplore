@@ -30,8 +30,8 @@ public:
     void setObjName(const std::string& objName) { ObjName = objName; };
     std::string getObjName() { return ObjName; };
 public:
-    /*用于替换掉以前需要在构造函数里面需要执行的内容
-    （也就是说现在构造函数里面基本上什么代码都不需要写）（非得写到构造函数里面的代码除外  或许某些机制需要这样的）
+    /*用于替换掉以前需要在构造函数里面需要执行的内容 【成员变量初始化】要写在构造函数里面
+    （也就是说现在构造函数里面基本上什么代码都不需要写(【除了成员变量初始化外】)）（非得写到构造函数里面的代码除外  或许某些机制需要这样的）
     InitClass用于减少模块间初始化相互依赖的问题
     如需要各种不同的构造函数走不同的构造函数逻辑，可以在类的构造函数里面及类里面增加一个成员变量加以区分
     当走InitClass时候也可用这个标志位加以区分，从而把类完整的初始化完毕*/
@@ -210,6 +210,48 @@ public:
     ~CreateObj() {};
 };
 
+template<typename T>
+class CreateMemVar {
+public:
+    CreateMemVar() {
+    
+    }
+};
+
+template<typename T>
+struct MemVarInfo {
+    std::string VarType;
+    std::string VarName;
+    T VarValue;
+    T  GetVarValue() { return VarValue; };
+    void  SetVarValue(const T &t) { VarValue =t};
+};
+
+#define CallFun(FunName)\
+pT1->##FunName(std::forward<Targs>(args)...);
+
+template<typename T1,typename T2, typename ...Targs>
+T2 Invok(std::string target, std::string fun,Targs&&...args) {
+    T1* pT1 = ObjFactory::getIns()->getClass<T1>(target);
+    CallFun(fun.c_str());
+}
+
+#define CallFunEn(classType,className,retType,funName,...)\
+classType* pT1 = ObjFactory::getIns()->getClass<classType>(#className);\
+pT1->##funName(__VA_ARGS__);
+
+#define CallMenFun(MemFun)\
+template<typename T1, typename T2, typename ...Targs>\
+T2 Invok##MemFun(std::string target, Targs&&...args) {\
+    T1* pT1 = ObjFactory::getIns()->getClass<T1>(target);\
+    pT1->##MemFun(std::forward<Targs>(args)...);\
+}\
+
+CallMenFun(InitClass);
+
+#define signal(sig)\
+ #sig\
+
 #define CreateMemVar1(VARTYPE,VARNAME,DEFAULTVALUE) \
 private: \
      VARTYPE VARNAME=DEFAULTVALUE; \
@@ -240,5 +282,6 @@ public:
 public:
     void InitObjFactory();
     void InitObjNotify();
-};
 
+    void Test();
+};
