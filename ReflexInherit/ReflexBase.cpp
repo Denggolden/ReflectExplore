@@ -53,8 +53,6 @@ void ReflexObjInit::Test()
 {
 	//Invok<WorkClass1, void>("WorkClass1_1","InitClass");
 
-	fgg(signal(WorkClass1::CBase));
-
 	CallFunEn(WorkClass1,WorkClass1_1,void, InitClass);
 
 	InvokInitClass<WorkClass1, void>("WorkClass1_1");

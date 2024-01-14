@@ -355,38 +355,82 @@
 
 //-----------------------分割线------------------------------------------------
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <typeinfo>
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <typeinfo>
+//
+//class Parent
+//{
+//public:
+//    virtual void tt() {};
+//};
+//
+//class Son : public Parent
+//{
+//};
+//
+//class Test_A {
+//};
+//
+//class Test_B : public Test_A {
+//};
+//
+//int main()
+//{
+//    Parent* p1 = new Son();
+//    Son* s1 = new Son();
+//    Test_A* ta = new Test_A();
+//    printf("ptr type Son: %s, Parent: %s, Test_A: %s\n", typeid(s1).name(), typeid(p1).name(), typeid(ta).name());
+//    printf("obj Son: %s, Parent: %s, Test_A: %s\n", typeid(*s1).name(), typeid(*p1).name(), typeid(*ta).name());
+//    printf("type Son: %s, Parent: %s, Test_A: %s\n", typeid(Son).name(), typeid(Parent).name(), typeid(Test_A).name());
+//    printf("successtion: %d, %d\n", typeid(Son).before(typeid(Parent)), typeid(Parent).before(typeid(Son)));
+//
+//    Test_A* tb = new Test_B();
+//    printf("type tb: %s，\n", typeid(tb).name());
+//
+//
+//}
 
-class Parent
+
+//-----------------------分割线------------------------------------------------
+#include<iostream>
+//template <typename T>
+//T fun();
+
+template<typename Ret>
+Ret fun()
 {
-public:
-    virtual void tt() {};
-};
+	std::cout << "template<typename>" << std::endl;
+}
 
-class Son : public Parent
+template<typename Ret, typename Arg1>
+Ret fun()
 {
-};
+	std::cout << "template<typename Arg1>" << std::endl;
+}
 
-class Test_A {
-};
+template<typename Ret, typename Arg1, typename Arg2>
+Ret fun()
+{
+	std::cout << "template<typename Arg1, typename Arg2>" << std::endl;
+}
 
-class Test_B : public Test_A {
+template<typename Ret,typename... Args>
+struct MyStruct
+{
+	void Call() {
+		fun<Ret,Args...>();
+	}
 };
 
 int main()
 {
-    Parent* p1 = new Son();
-    Son* s1 = new Son();
-    Test_A* ta = new Test_A();
-    printf("ptr type Son: %s, Parent: %s, Test_A: %s\n", typeid(s1).name(), typeid(p1).name(), typeid(ta).name());
-    printf("obj Son: %s, Parent: %s, Test_A: %s\n", typeid(*s1).name(), typeid(*p1).name(), typeid(*ta).name());
-    printf("type Son: %s, Parent: %s, Test_A: %s\n", typeid(Son).name(), typeid(Parent).name(), typeid(Test_A).name());
-    printf("successtion: %d, %d\n", typeid(Son).before(typeid(Parent)), typeid(Parent).before(typeid(Son)));
-
-    Test_A* tb = new Test_B();
-    printf("type tb: %s，\n", typeid(tb).name());
-
-
+	MyStruct<void> m;
+	m.Call();
+	MyStruct<void,int> mm;
+	mm.Call();
+	MyStruct<void,int, int> mmm;
+	mmm.Call();
+	//std::cout << fun<int>() << std::endl;//显式实例化
+	return 0;
 }
